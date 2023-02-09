@@ -17,7 +17,13 @@ async function main() {
         type_2: pokemon.type_2,
         image_url: pokemon.image_url,
       },
-      update: {},
+      update: {
+        dex_number: pokemon.dex_number,
+        name: pokemon.name,
+        type_1: pokemon.type_1,
+        type_2: pokemon.type_2,
+        image_url: pokemon.image_url,
+      },
     });
   }
 
@@ -31,7 +37,12 @@ async function main() {
       last_name: "Oak",
       password: "pokemon4eva1996!",
     },
-    update: {},
+    update: {
+      email: "samuelOak@pallettownlab.com",
+      first_name: "Samuel",
+      last_name: "Oak",
+      password: "pokemon4eva1996!",
+    },
   });
 }
 
