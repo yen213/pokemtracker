@@ -3,8 +3,17 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "npm": "8.11.0",
+    "node": "16.16.0"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:server": "cd server && npm run start",
+    "start:client": "cd client && npm run dev",
+    "start:studio": "cd server && npm run start:studio",
+    "migrate-db": "cd server && npm run migrate-db",
+    "seed-db": "cd server && npm run seed-db",
+    "setup": "cd client && npm install && cd ../server && npm install && cp .env.example .env && npm run migrate-db -- --name init"
   },
   "repository": {
     "type": "git",
