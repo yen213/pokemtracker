@@ -20,7 +20,7 @@ You will need to set up the authentication so that only an admin user can access
 Please take into consideration access from both the client and from external requests, say from something like Postman.
 There are no designs for the admin part of the project.
 
-As part of the seed data a `user` table with an admin user has already been created.
+As part of the seed data a `user` table with an admin user already created.
 
 The seed data for the provided `pokemon` table contains a few errors that an admin needs to be able to correct.
 
