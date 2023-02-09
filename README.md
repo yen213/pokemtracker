@@ -6,19 +6,19 @@ Gotta catch 'em all has been the goal of almost every Trainer since the days of 
 
 Your goal is to provide a prototype that will help Trainers keep track of the Pokemon they have already caught.
 
-## Project Requirements
+## Prototype Requirements
 
-For this project, you will build a web application that allows users to see a list of Pokemon. The user should have the ability to filter this list based on name, Pokedex number, and the Pokemon's primary and secondary types.
+For this prototype, you will build a web application that allows users to see a list of Pokemon. The user should have the ability to filter this list based on name, Pokedex number, and the Pokemon's primary and secondary types.
 In addition, the user should also be able to mark a Pokemon as "caught".
 
-For this prototype, we will assume that a device will only ever have one user so there is no need to create a sign in flow for them.
+We will assume that a device will only ever have one user so there is no need to create a sign in flow for them.
 
 Provided in the `design` folder is a list of screenshots that contain how the design should look. Feel free to make any modifications to the design that you feel would make for a better UX.
 
 The app will have a need for an admin user that can modify data.
 You will need to set up the authentication so that only an admin user can access endpoints that modify Pokemon data.
 Please take into consideration access from both the client and from external requests, say from something like Postman.
-There are no designs for the admin part of the project.
+There are no designs for the admin part of the prototype.
 
 As part of the seed data a `user` table with an admin user already created.
 
@@ -40,7 +40,7 @@ The seed data for the provided `pokemon` table contains a few errors that an adm
 Below is a list of these requirements in a easy to parse way.
 ### Standard user
 - As a standard user I should be able to see a list of Pokemon introduced in Pokemon Scarlet/Violet (103 in total)
-- As a standard user I should be able to filter the list by typing in the Pokemon's Name or Pokedex number
+- As a standard user I should be able to filter the list by typing in the Pokemon's name or Pokedex number
 - As a standard user I should be able to filter the list by selecting the Pokemon's Type 1 or Type 2
 - As a standard user I should be able to toggle a Pokemon's status as caught/uncaught
 - As a standard user I should be able to see a count how many Pokemon I have as a number and a percent
@@ -54,7 +54,7 @@ Below is a list of these requirements in a easy to parse way.
 - As an admin user I should be able to delete Pokemon data
 
 ## Technical Requirements
-The project should have a front end application and a back end application. The front end needs to communicate with the back end to facilitate data management.
+The prototype should have a front end application and a back end application. The front end needs to communicate with the back end to facilitate data management.
 
 The provided code has all of the required packages set up in the `package.json` files.
 
@@ -80,17 +80,18 @@ This command will install all the project dependencies and create the SQLite dat
 After you have the dependencies installed you should be able to run the client and server application separately using the commands provided in the `package.json` files.
 
 ## Conclusion
-You should now be ready to begin creating the prototype. The design screenshots provided should give you a solid starting point, but feel free to add your own flare to it (or don't)!
+You should now be ready to begin creating the prototype. The design screenshots provided should give you a solid starting point, but feel free to add your own flare to it.
 
 Remember this is a prototype and functionality/code will be of more value than how the app looks.
 
 Below is a list of links to various documentation links for the different packages used:
-- [React](https://reactjs.org/docs/getting-started.html)
-- [Tailwind](https://tailwindcss.com/docs/installation)
-- [React Router](https://reactrouter.com/en/main)
 - [Typescript](https://www.typescriptlang.org/docs/)
+- [React](https://reactjs.org/docs/getting-started.html)
 - [Express](https://expressjs.com/en/guide/routing.html)
 - [Prisma](https://www.prisma.io/docs)
+- [Prisma Studio](https://www.prisma.io/studio)
+- [Tailwind](https://tailwindcss.com/docs/installation)
+- [React Router](https://reactrouter.com/en/main)
 - [Passport](https://www.passportjs.org/docs/)
 
-
+Good luck and happy programming!
