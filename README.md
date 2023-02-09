@@ -6,7 +6,7 @@ Gotta catch 'em all has been the goal of almost every Trainer since the days of 
 
 Your goal is to provide a prototype that will help Trainers keep track of the Pokemon they have already caught.
 
-## Project Requirement
+## Project Requirements
 
 For this project, you will build a web application that allows users to see a list of Pokemon. The user should have the ability to filter this list based on name, Pokedex number, and the Pokemon's primary and secondary types.
 In addition, the user should also be able to mark a Pokemon as "caught".
@@ -58,6 +58,7 @@ The project should have a front end application and a back end application. The 
 
 The provided code has all of the required packages set up in the `package.json` files.
 
+You will also need to have [Node v18.18](https://nodejs.org/en/) installed on your computer.
 ### Front End
 The front end needs to be built with Vite/React 18 using TypeScript. The repo already has the configuration set up.
 Tailwind CSS has been configured as well, but feel free to use whatever method of styling you are comfortable with.
