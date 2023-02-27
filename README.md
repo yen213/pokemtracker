@@ -15,29 +15,28 @@ We will assume that a device will only ever have one user so there is no need to
 
 Provided in the `design` folder is a list of screenshots that contain how the design should look. Feel free to make any modifications to the design that you feel would make for a better UX.
 
-The app will have a need for an admin user that can modify data.
+The prototype will have a need for a separate admin user that can modify data.
 You will need to set up the authentication so that only an admin user can access endpoints that modify Pokemon data.
-Please take into consideration access from both the client and from external requests, say from something like Postman.
+Please take into consideration access from both the web application and from external requests, say from something like Postman.
 There are no designs for the admin part of the prototype.
 
 As part of the seed data a `user` table with an admin user already created.
 
 The seed data for the provided `pokemon` table contains a few errors that an admin needs to be able to correct.
 
-1. 3 pokemon have the wrong secondary types
-   - Skeledirge #911 should have it's Type 2 be ghost
-   - Toedscool #914 image_url should be "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/914.png"
-2. Pokemon #1000 is missing. Here is the data that needs to be added
+1. Skeledirge #911 should have it's Type 2 be ghost
+2. Toedscool #914 image_url should be "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/914.png"
+3. Pokemon #1000 is missing. Here is the data that needs to be added
    - name: "gholdengo",
    - dex_number: 1000,
    - type_1: "steel",
    - type_2: "ghost",
    - image_url: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1000.png",
-3. Pokemon #1009 has snuck their way onto the list and needs to be removed
+4. Pokemon #1009 has snuck their way onto the list and needs to be removed
 
 <strong>Note:</strong> These are the test cases that will be used to see if functionality is in place. When validating this functionality a new database will be created and seeded with the incorrect data.
 
-Below is a list of these requirements in a easy to parse way.
+Below is a list of these requirements in a list format.
 ### Standard user
 - As a standard user I should be able to see a list of Pokemon introduced in Pokemon Scarlet/Violet (103 in total)
 - As a standard user I should be able to filter the list by typing in the Pokemon's name or Pokedex number
