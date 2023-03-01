@@ -8,21 +8,12 @@
     "node": "16.16.0"
   },
   "scripts": {
-    "start:server": "cd server && npm run start",
     "start:client": "cd client && npm run dev",
+    "setup:client": "cd client && npm install",
+    "start:server": "cd server && npm run start",
+    "setup:server": "cd server && npm install && cp .env.example .env && npm run migrate-db",
     "start:studio": "cd server && npm run start:studio",
     "migrate-db": "cd server && npm run migrate-db",
-    "seed-db": "cd server && npm run seed-db",
-    "setup": "cd client && npm install && cd ../server && npm install && cp .env.example .env && npm run migrate-db"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/tcov189/PokeTrackerApp.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/tcov189/PokeTrackerApp/issues"
-  },
-  "homepage": "https://github.com/tcov189/PokeTrackerApp#readme"
+    "seed-db": "cd server && npm run seed-db"
+  }
 }
