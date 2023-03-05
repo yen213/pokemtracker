@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
-import LabelInput from "../LabelInput";
+import LabelInput from "../input/LabelInput";
 import PokemonList from "./PokemonList";
-import PokemonTypeSelector from "../PokemonTypeSelector";
+import PokemonTypeSelector from "../input/PokemonTypeSelector";
 
 import { pokemonData } from "../data/pokemon";
 

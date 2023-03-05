@@ -1,4 +1,4 @@
-import FloatingMenu from "./FloatingMenu";
+import FloatingMenu from "./menu/FloatingMenu";
 
 import { AppHeader } from "./AppHeader";
 import { PokemonListContainer } from "./pokemonList/PokemonListContainer";

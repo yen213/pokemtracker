@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import AddPokemonModal from "./AddPokemonModal";
-import LoginIcon from "./icons/LoginIcon";
-import PlusIcon from "./icons/PlusIcon";
+import LoginIcon from "../icons/LoginIcon";
+import PlusIcon from "../icons/PlusIcon";
 
 // Component for rendering the floating menu icon on the home page of the app
 const FloatingMenu = () => {

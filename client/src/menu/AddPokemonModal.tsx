@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useState } from "react";
 
-import LabelInput from "./LabelInput";
-import PokemonTypeSelector from "./PokemonTypeSelector";
+import LabelInput from "../input/LabelInput";
+import PokemonTypeSelector from "../input/PokemonTypeSelector";
 
 type Props = {
     showModal: boolean;
