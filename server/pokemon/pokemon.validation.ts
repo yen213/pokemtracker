@@ -26,6 +26,9 @@ export const pokemonValidator = [
         .withMessage("Only letters are allowed")
         .trim()
         .not()
+        .equals("any")
+        .withMessage("Type 1 cannot be 'any'")
+        .not()
         .isEmpty()
         .toLowerCase()
         .withMessage("A non-empty string of letters is required"),
