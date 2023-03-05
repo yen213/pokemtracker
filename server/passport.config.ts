@@ -8,10 +8,10 @@ import { Strategy as LocalStrategy } from "passport-local";
 module.exports = function (passport: PassportStatic) {
     passport.use(
         new LocalStrategy(
-            {
-                usernameField: "email",
-                passwordField: "password",
-            },
+            // {
+            //     usernameField: "email",
+            //     passwordField: "password",
+            // },
             async function verify(email: string, password: string, cb: Function) {
                 try {
                     const user = await AdminService.findUserByEmail(email);
