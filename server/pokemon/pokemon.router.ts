@@ -1,7 +1,7 @@
 import express from "express";
 
 import { createPokemon, deletePokemon, getPokemonList, updatePokemon } from "./pokemon.controller";
-import { isValidUser } from "../validate.user";
+import { isValidUser } from "../auth/validate.user";
 import { pokemonValidator, pokemonValidatorResult } from "./pokemon.validation";
 
 export const pokemonRouter = express.Router();

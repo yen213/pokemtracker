@@ -1,4 +1,4 @@
-import * as AdminService from "./admin/admin.service";
+import * as AdminService from "./user/user.service";
 
 import { User } from "@prisma/client";
 import { PassportStatic } from "passport";
