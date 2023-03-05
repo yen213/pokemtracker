@@ -4,20 +4,35 @@ import LabelInput from "../input/LabelInput";
 import PokemonList from "./PokemonList";
 import PokemonTypeSelector from "../input/PokemonTypeSelector";
 
+import { getPokemonList } from "../axios/pokemon.api";
 import { pokemonData } from "../data/pokemon";
 
-type Props = {};
-
 // Wraps and renders the Pokemon search components and the Pokemon list
-export const PokemonListContainer = (props: Props) => {
-    const [pokemonFilter, setPokemonFilter] = useState("");
-    const [filteredPokemon, setFilteredPokemon] = useState(pokemonData);
+export const PokemonListContainer = () => {
+    const [pokemonList, setPokemonList] = useState(pokemonData); // DB list
+    const [filteredList, setFilteredList] = useState(pokemonData); // Filtered list
+    const [inputFilter, setInputFilter] = useState("");
     const [caughtPokemon, setCaughtPokemon] = useState<Array<number>>([]);
     const [type1, setType1] = useState("any");
     const [type2, setType2] = useState("any");
 
+    // Load the list of Pokemon from the database
+    useEffect(() => {
+        const getList = async () => {
+            const res = await getPokemonList();
+            const list = res.data.list;
+
+            if (res.status === 200 && list != null && list.length > 0) {
+                console.log(list);
+                setPokemonList(list);
+            }
+        };
+
+        getList();
+    }, []);
+
     /**
-     * Filters {@link pokemonData} based on user input and/or their selection of the
+     * Filters {@link pokemonList} based on user input and/or their selection of the
      * two type selectors.
      *
      * @param t1 Value of the Type 1 Selector
@@ -25,7 +40,7 @@ export const PokemonListContainer = (props: Props) => {
      * @param userInput User input from the name/dex_number input field
      */
     const filterPokemonData = (t1: string, t2: string, userInput: string) =>
-        pokemonData.filter((pokemon) => {
+        pokemonList.filter((pokemon) => {
             let dexString = pokemon.dex_number.toString();
             let matchesInputField = isMatchingNameOrDexNum(userInput, pokemon.name, dexString);
 
@@ -56,8 +71,8 @@ export const PokemonListContainer = (props: Props) => {
         userInput === "" || pokemonName.includes(userInput) || pokemonDexNum.includes(userInput);
 
     useEffect(() => {
-        setFilteredPokemon(filterPokemonData(type1, type2, pokemonFilter));
-    }, [type1, type2, pokemonFilter]);
+        setFilteredList(filterPokemonData(type1, type2, inputFilter));
+    }, [type1, type2, inputFilter]);
 
     return (
         <div>
@@ -66,8 +81,8 @@ export const PokemonListContainer = (props: Props) => {
                     <LabelInput
                         id="pokemon-list-filter-input"
                         label="Filter By Name or PokeDex Number"
-                        value={pokemonFilter}
-                        setValue={setPokemonFilter}
+                        value={inputFilter}
+                        setValue={setInputFilter}
                         placeholder="Enter name or PokeDex Number..."
                     />
                 </div>
@@ -87,10 +102,10 @@ export const PokemonListContainer = (props: Props) => {
                 </div>
             </div>
             <p className="mb-3">
-                You have caught <strong>{caughtPokemon.length}</strong> out of <strong>{pokemonData.length}</strong>, or{" "}
-                <strong>~{((caughtPokemon.length / pokemonData.length) * 100).toFixed(0)}%</strong>
+                You have caught <strong>{caughtPokemon.length}</strong> out of <strong>{pokemonList.length}</strong>, or{" "}
+                <strong>~{((caughtPokemon.length / pokemonList.length) * 100).toFixed(0)}%</strong>
             </p>
-            <PokemonList caughtPokemon={caughtPokemon} setCaughtPokemon={setCaughtPokemon} data={filteredPokemon} />
+            <PokemonList caughtPokemon={caughtPokemon} setCaughtPokemon={setCaughtPokemon} data={filteredList} />
         </div>
     );
 };

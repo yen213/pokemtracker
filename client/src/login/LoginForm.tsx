@@ -1,11 +1,12 @@
 import { useState } from "react";
 
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
 import EyeIcon from "../icons/EyeIcon";
 import LockIcon from "../icons/LockIcon";
 import LoginIcon from "../icons/LoginIcon";
+
+import { loginUser } from "../axios/user.api";
 
 // Renders the form for the login page
 const LoginForm = () => {
@@ -18,7 +19,7 @@ const LoginForm = () => {
     const navigate = useNavigate();
 
     // Logs in a user to the app and routes them to the home page
-    const login = (e: React.MouseEvent) => {
+    const login = async (e: React.MouseEvent) => {
         e.preventDefault();
 
         // Make sure both fields has values
@@ -34,15 +35,11 @@ const LoginForm = () => {
             return;
         }
 
-        axios({
-            method: "post",
-            data: { username: email.trim(), password: password.trim() },
-            withCredentials: true,
-            url: "http://localhost:3001/auth/login",
-        }).then(
-            () => navigate("/"),
-            (err) => console.log(err.response)
-        );
+        const res = await loginUser({ username: email.trim(), password: password.trim() });
+
+        if (res.status === 200) {
+            navigate("/");
+        }
     };
 
     return (

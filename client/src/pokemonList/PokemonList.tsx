@@ -3,19 +3,12 @@ import { useState } from "react";
 import PlusIcon from "../icons/PlusIcon";
 import PokeBallIcon from "../icons/PokeBallIcon";
 
+import { PokemonObject } from "../pokemon.type";
+
 import pokemonType from "../styles/pokemon-types.module.css";
 
-// Custom type for the list of Pokemon objects
-type PokemonData = {
-    name: string;
-    dex_number: number;
-    type_1: string;
-    type_2: string | null;
-    image_url: string;
-};
-
 type Props = {
-    data: Array<PokemonData>;
+    data: Array<PokemonObject>;
     caughtPokemon: Array<number>;
     setCaughtPokemon: React.Dispatch<React.SetStateAction<Array<number>>>;
 };
