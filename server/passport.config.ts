@@ -39,9 +39,9 @@ module.exports = function (passport: PassportStatic) {
     passport.deserializeUser(async (userId: number, cb) => {
         try {
             const user = await AdminService.findUserByID(userId);
-            const { id, email, first_name, last_name } = user;
+            const { email, first_name, last_name } = user;
 
-            return cb(null, { id, email, first_name, last_name });
+            return cb(null, { email, first_name, last_name });
         } catch (err: any) {
             return cb(err);
         }
