@@ -5,14 +5,15 @@ type Props = {
 };
 
 export default function PokeBallIcon({ isCaught }: Props) {
-    // Used to change the Pokeball state when it is hovered over
-    const [isHovered, setIsHovered] = useState(false);
+    const [isHovered, setIsHovered] = useState(false); // Draws the red color on top part of caught Pokeballs
+    const [isClicked, setIsClicked] = useState(false); // Animates caught action
 
     return (
         <svg
-            onMouseEnter={() => setIsHovered(true)}
+            onClick={() => setIsClicked((prev) => !prev)}
+            onMouseEnter={(e) => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            className="hover:rotate-45 transition-all duration-[0.3s]"
+            className={`${(!isCaught && "hover:animate-catching-rotate") || (isClicked && "animate-jump")}`}
             version="1.1"
             width="25"
             height="25"

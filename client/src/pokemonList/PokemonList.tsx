@@ -58,8 +58,8 @@ const PokemonList = ({ filteredPokemonList, caughtPokemon, onPokemonClick, setCa
                     >
                         <p className="font-bold">{pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}</p>
                         <p className="font-bold">#{pokemon.dex_number}</p>
-                        <img src={pokemon.image_url} />
-                        <div>
+                        <img className="my-1 hover:animate-jump" src={pokemon.image_url} />
+                        <div className="my-1">
                             <div className={`${pokemonType["type-icon"]} ${pokemonType[pokemon.type_1]} mr-1`}></div>
                             {pokemon.type_2 != null && (
                                 <div className={`${pokemonType["type-icon"]} ${pokemonType[pokemon.type_2]}`}></div>
