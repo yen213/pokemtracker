@@ -1,35 +1,28 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import LabelInput from "../input/LabelInput";
 import PokemonList from "./PokemonList";
+import PokemonModal from "../menu/PokemonModal";
 import PokemonTypeSelector from "../input/PokemonTypeSelector";
 
-import { getPokemonList } from "../axios/pokemon.api";
 import { pokemonData } from "../data/pokemon";
+import { PokemonObject } from "../pokemon.type";
 
-// Wraps and renders the Pokemon search components and the Pokemon list
-export const PokemonListContainer = () => {
-    const [pokemonList, setPokemonList] = useState(pokemonData); // DB list
+type Props = {
+    pokemonList: Array<PokemonObject>;
+    setPokemonList: Dispatch<SetStateAction<Array<PokemonObject>>>;
+};
+
+// Wraps and renders the Pokemon search components, the Pokemon list
+// and the Pokemon add, update, and delete modal
+export const PokemonListContainer = ({ pokemonList, setPokemonList }: Props) => {
     const [filteredList, setFilteredList] = useState(pokemonData); // Filtered list
+    const [modalData, setModalData] = useState<PokemonObject | null>(null);
+    const [showModal, setShowModal] = useState(false);
     const [inputFilter, setInputFilter] = useState("");
     const [caughtPokemon, setCaughtPokemon] = useState<Array<number>>([]);
     const [type1, setType1] = useState("any");
     const [type2, setType2] = useState("any");
-
-    // Load the list of Pokemon from the database
-    useEffect(() => {
-        const getList = async () => {
-            const res = await getPokemonList();
-            const list = res.data.list;
-
-            if (res.status === 200 && list != null && list.length > 0) {
-                console.log(list);
-                setPokemonList(list);
-            }
-        };
-
-        getList();
-    }, []);
 
     /**
      * Filters {@link pokemonList} based on user input and/or their selection of the
@@ -70,9 +63,26 @@ export const PokemonListContainer = () => {
     const isMatchingNameOrDexNum = (userInput: string, pokemonName: string, pokemonDexNum: string) =>
         userInput === "" || pokemonName.includes(userInput) || pokemonDexNum.includes(userInput);
 
+    /**
+     * Open the modal with the clicked Pokemon object. Only
+     * applicable for logged in Admin users
+     *
+     * @param pokemon Pokemon object to update/delete from the DB
+     */
+    const onPokemonClick = (pokemon: PokemonObject) => {
+        setModalData(pokemon);
+        setShowModal(true);
+    };
+
+    // Update the filtered list data state on user input
     useEffect(() => {
         setFilteredList(filterPokemonData(type1, type2, inputFilter));
     }, [type1, type2, inputFilter]);
+
+    // Update the filtered list state when the real list state changes
+    useEffect(() => {
+        setFilteredList(pokemonList);
+    }, [pokemonList]);
 
     return (
         <div>
@@ -105,7 +115,21 @@ export const PokemonListContainer = () => {
                 You have caught <strong>{caughtPokemon.length}</strong> out of <strong>{pokemonList.length}</strong>, or{" "}
                 <strong>~{((caughtPokemon.length / pokemonList.length) * 100).toFixed(0)}%</strong>
             </p>
-            <PokemonList caughtPokemon={caughtPokemon} setCaughtPokemon={setCaughtPokemon} data={filteredList} />
+            <PokemonList
+                onPokemonClick={onPokemonClick}
+                caughtPokemon={caughtPokemon}
+                setCaughtPokemon={setCaughtPokemon}
+                filteredPokemonList={filteredList}
+            />
+            {showModal && (
+                <PokemonModal
+                    type="UPDATE"
+                    data={modalData}
+                    showModal={showModal}
+                    setShowModal={setShowModal}
+                    setPokemonList={setPokemonList}
+                />
+            )}
         </div>
     );
 };

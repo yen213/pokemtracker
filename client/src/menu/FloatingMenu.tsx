@@ -1,12 +1,17 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Link } from "react-router-dom";
 
-import AddPokemonModal from "./AddPokemonModal";
+import PokemonModal from "./PokemonModal";
 import LoginIcon from "../icons/LoginIcon";
 import PlusIcon from "../icons/PlusIcon";
 
+import { PokemonObject } from "../pokemon.type";
+
+type Props = {
+    setPokemonList: Dispatch<SetStateAction<Array<PokemonObject>>>;
+};
 // Component for rendering the floating menu icon on the home page of the app
-const FloatingMenu = () => {
+const FloatingMenu = ({ setPokemonList }: Props) => {
     const [showAddModal, setShowAddModal] = useState(false);
 
     return (
@@ -26,7 +31,14 @@ const FloatingMenu = () => {
             >
                 <PlusIcon iconClass="h-8 w-8 text-neutral-600 hover:text-neutral-800" />
             </div>
-            {showAddModal && <AddPokemonModal showModal={showAddModal} setShowModal={setShowAddModal} />}
+            {showAddModal && (
+                <PokemonModal
+                    type="ADD"
+                    showModal={showAddModal}
+                    setShowModal={setShowAddModal}
+                    setPokemonList={setPokemonList}
+                />
+            )}
         </div>
     );
 };
