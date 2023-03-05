@@ -13,7 +13,7 @@ export const getPokemonList = async (req: Request, res: Response) => {
 
         return res
             .status(200)
-            .json({ status: 200, message: "Successfully retrieved list of pokemon", data: pokemonList });
+            .json({ status: 200, message: "Successfully retrieved list of pokemon", list: pokemonList });
     } catch (err: any) {
         return res.status(500).json({ error: err.message });
     }
@@ -32,7 +32,7 @@ export const createPokemon = async (req: Request, res: Response) => {
 
         return res
             .status(200)
-            .json({ status: 200, message: "Successfully created new Pokemon entry", data: newPokemon });
+            .json({ status: 200, message: "Successfully created new Pokemon entry", pokemon: newPokemon });
     } catch (err: any) {
         return res.status(500).json({ error: err.message });
     }
@@ -51,7 +51,7 @@ export const updatePokemon = async (req: Request, res: Response) => {
 
         return res
             .status(200)
-            .json({ status: 200, message: "Successfully updated existing Pokemon entry", data: updatedPokemon });
+            .json({ status: 200, message: "Successfully updated existing Pokemon entry", pokemon: updatedPokemon });
     } catch (err: any) {
         return res.status(500).json({ error: err.message });
     }
@@ -78,7 +78,7 @@ export const deletePokemon = async (req: Request, res: Response) => {
 
         return res
             .status(200)
-            .json({ status: 200, message: "Successfully deleted the Pokemon entry", data: deletedPokemon });
+            .json({ status: 200, message: "Successfully deleted the Pokemon entry", pokemon: deletedPokemon });
     } catch (err: any) {
         return res.status(500).json({ error: err.message });
     }
