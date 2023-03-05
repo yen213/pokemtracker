@@ -17,7 +17,17 @@ const LabelInput = ({ label, id, inputType = "text", placeholder, value, setValu
                 {label}
             </label>
             <input
-                onChange={(e) => (inputType === "number" ? setValue(e.target.valueAsNumber) : setValue(e.target.value))}
+                onChange={(e) => {
+                    if (inputType === "number") {
+                        if (e.target.value === "") {
+                            setValue(0);
+                        } else {
+                            setValue(e.target.valueAsNumber);
+                        }
+                    } else {
+                        setValue(e.target.value);
+                    }
+                }}
                 value={value === null ? "" : value}
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id={id}
