@@ -1,17 +1,12 @@
-import LoginIcon from "./icons/LoginIcon";
+import FloatingMenu from "./FloatingMenu";
 
 import { AppHeader } from "./AppHeader";
-import { Link } from "react-router-dom";
 import { PokemonListContainer } from "./pokemonList/PokemonListContainer";
 
 function App() {
     return (
         <div className="antialiased font-open-sans bg-gradient-to-b from-sky-100 to-sky-300 to-sky-400 min-h-screen">
             <AppHeader />
-            <Link className="flex justify-end items-center p-3 text-lg font-semibold" to="/login">
-                <LoginIcon />
-                Login
-            </Link>
             <div className="mx-auto py-5 w-3/6 flex flex-col gap-3">
                 <h2 className="font-bold text-2xl">Welcome to the PokeTracker!</h2>
                 <p>
@@ -24,6 +19,7 @@ function App() {
                 <p>Use the search box below to search by a Pokemon's name or dex number.</p>
 
                 <PokemonListContainer />
+                <FloatingMenu />
             </div>
         </div>
     );
