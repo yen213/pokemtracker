@@ -1,9 +1,9 @@
-type Props = { iconColor?: string | undefined };
+type Props = { isMenuIcon?: boolean };
 
-const LoginIcon = ({ iconColor }: Props) => {
+const LoginIcon = ({ isMenuIcon }: Props) => {
     return (
         <svg
-            className={`h-8 w-8 ${iconColor != null ? iconColor : "text-red-500"}`}
+            className={`h-8 w-8 text-neutral-600${isMenuIcon ? " cursor-pointer hover:text-neutral-800" : ""}`}
             width="24"
             height="24"
             viewBox="0 0 24 24"
@@ -12,7 +12,6 @@ const LoginIcon = ({ iconColor }: Props) => {
             fill="none"
             strokeLinecap="round"
             strokeLinejoin="round"
-            role="button"
         >
             <path stroke="none" d="M0 0h24v24H0z" /> <circle cx="12" cy="7" r="4" />{" "}
             <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
