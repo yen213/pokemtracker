@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
-import { pokemonData } from "../data/pokemon";
+
+import LabelInput from "../LabelInput";
 import PokemonList from "./PokemonList";
+import PokemonTypeSelector from "../PokemonTypeSelector";
+
+import { pokemonData } from "../data/pokemon";
 
 type Props = {};
 
+// Wraps and renders the Pokemon search components and the Pokemon list
 export const PokemonListContainer = (props: Props) => {
     const [pokemonFilter, setPokemonFilter] = useState("");
     const [filteredPokemon, setFilteredPokemon] = useState(pokemonData);
@@ -11,44 +16,13 @@ export const PokemonListContainer = (props: Props) => {
     const [type1, setType1] = useState("any");
     const [type2, setType2] = useState("any");
 
-    // I could have sorted this manually but felt a little lazy
-    const pokemonTypes = [
-        { value: "any", label: "Any" },
-        { value: "bug", label: "Bug" },
-        { value: "electric", label: "Electric" },
-        { value: "fire", label: "Fire" },
-        { value: "grass", label: "Grass" },
-        { value: "normal", label: "Normal" },
-        { value: "rock", label: "Rock" },
-        { value: "dark", label: "Dark" },
-        { value: "fairy", label: "Fairy" },
-        { value: "flying", label: "Flying" },
-        { value: "ground", label: "Ground" },
-        { value: "poison", label: "Poison" },
-        { value: "steel", label: "Steel" },
-        { value: "dragon", label: "Dragon" },
-        { value: "fighting", label: "Fighting" },
-        { value: "ghost", label: "Ghost" },
-        { value: "ice", label: "Ice" },
-        { value: "psychic", label: "Psychic" },
-        { value: "water", label: "Water" },
-    ].sort((a, b) => a.value.localeCompare(b.value));
-
-    const pokemonTypesSelector = pokemonTypes.map((type) => (
-        <option key={type.value} value={type.value}>
-            {type.label}
-        </option>
-    ));
-
     /**
      * Filters {@link pokemonData} based on user input and/or their selection of the
      * two type selectors.
      *
      * @param t1 Value of the Type 1 Selector
      * @param t2 Value of the Type 2 Selector
-     * @param userInput User input from the input field
-     *
-     * @returns Array of the filtered pokemon data objects
+     * @param userInput User input from the name/dex_number input field
      */
     const filterPokemonData = (t1: string, t2: string, userInput: string) =>
         pokemonData.filter((pokemon) => {
@@ -87,52 +61,29 @@ export const PokemonListContainer = (props: Props) => {
 
     return (
         <div>
-            <div className="grid grid-flow-row grid-cols-3 gap-10 mb-4">
-                <div className="col-span-2">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="pokemon-list-filter-input">
-                        Filter By Name or PokeDex Number
-                    </label>
-                    <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            <div className="flex gap-10 mb-4 justify-between">
+                <div className="w-2/4">
+                    <LabelInput
                         id="pokemon-list-filter-input"
-                        type="text"
+                        label="Filter By Name or PokeDex Number"
+                        value={pokemonFilter}
+                        setValue={setPokemonFilter}
                         placeholder="Enter name or PokeDex Number..."
-                        onChange={(e) => setPokemonFilter(e.target.value)}
                     />
                 </div>
-                <div className="flex flex-row gap-4 justify-end">
-                    <div className="flex flex-col">
-                        <label
-                            className="block text-gray-700 text-sm font-bold mb-2"
-                            htmlFor="pokemon-list-filter-select1"
-                        >
-                            Type 1
-                        </label>
-                        <select
-                            value={type1}
-                            onChange={(e) => setType1(e.target.value)}
-                            className="text-gray-700 text-md rounded grow px-2"
-                            id="pokemon-list-filter-select1"
-                        >
-                            {pokemonTypesSelector}
-                        </select>
-                    </div>
-                    <div className="flex flex-col">
-                        <label
-                            className="block text-gray-700 text-sm font-bold mb-2"
-                            htmlFor="pokemon-list-filter-select2"
-                        >
-                            Type 2
-                        </label>
-                        <select
-                            value={type2}
-                            onChange={(e) => setType2(e.target.value)}
-                            className="text-gray-700 text-md rounded grow px-2"
-                            id="pokemon-list-filter-select2"
-                        >
-                            {pokemonTypesSelector}
-                        </select>
-                    </div>
+                <div className="flex flex-row gap-4">
+                    <PokemonTypeSelector
+                        label="Type 1"
+                        id="pokemon-list-filter-select1"
+                        value={type1}
+                        setValue={setType1}
+                    />
+                    <PokemonTypeSelector
+                        label="Type 2"
+                        id="pokemon-list-filter-select2"
+                        value={type2}
+                        setValue={setType2}
+                    />
                 </div>
             </div>
             <p className="mb-3">
