@@ -8,12 +8,12 @@ export const getPokemonList = (): Promise<AxiosResponse<any, any>> => axiosClien
 
 // Adds a new Pokemon to the DB
 export const addNewPokemon = (pokemon: PokemonObject): Promise<AxiosResponse<any, any>> =>
-    axiosClient.post("/pokemon/add", { data: pokemon });
+    axiosClient.post("/pokemon/add", { ...pokemon });
 
 // Updates an existing Pokemon from the DB
 export const updatePokemon = (pokemon: PokemonObject): Promise<AxiosResponse<any, any>> =>
-    axiosClient.put("/pokemon/update", { data: pokemon });
+    axiosClient.put("/pokemon/update", { ...pokemon });
 
 // Deletes an existing Pokemon from the DB
 export const deletePokemon = (dex_number: number): Promise<AxiosResponse<any, any>> =>
-    axiosClient.delete("/pokemon/delete", { data: dex_number });
+    axiosClient.post("/pokemon/delete", { dex_number });

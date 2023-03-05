@@ -10,4 +10,4 @@ export const pokemonRouter = express.Router();
 pokemonRouter.get("/list", getPokemonList);
 pokemonRouter.post("/add", isValidUser, pokemonValidator, pokemonValidatorResult, createPokemon);
 pokemonRouter.put("/update", isValidUser, pokemonValidator, pokemonValidatorResult, updatePokemon);
-pokemonRouter.delete("/delete", isValidUser, deletePokemon);
+pokemonRouter.post("/delete", isValidUser, deletePokemon);
