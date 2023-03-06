@@ -1,29 +1,41 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import FloatingMenu from "./menu/FloatingMenu";
 
+import { getLoggedInUser } from "./axios/user.api";
 import { getPokemonList } from "./axios/pokemon.api";
-import { pokemonData } from "./data/pokemon";
+import { AppContextValue, useData } from "./App.context";
 import { AppHeader } from "./AppHeader";
 import { PokemonListContainer } from "./pokemonList/PokemonListContainer";
 
 // Renders the main page of the application
 const HomePage = () => {
-    const [pokemonList, setPokemonList] = useState(pokemonData); // DB list
+    // App context
+    const { setPokemonList, setFilteredPokemonList, setIsUserLoggedIn }: AppContextValue = useData();
 
-    // Load the list of Pokemon from the database
+    // Load the list of Pokemon from the database and check session
+    // to see if a user is logged in
     useEffect(() => {
         const getList = async () => {
             const res = await getPokemonList();
             const list = res.data.list;
 
             if (res.status === 200 && list != null && list.length > 0) {
-                console.log(list);
                 setPokemonList(list);
+                setFilteredPokemonList(list);
+            }
+        };
+
+        const getUser = async () => {
+            const res = await getLoggedInUser();
+
+            if (res.status === 200) {
+                setIsUserLoggedIn(true);
             }
         };
 
         getList();
+        getUser();
     }, []);
 
     return (
@@ -37,8 +49,8 @@ const HomePage = () => {
                 </p>
                 <p>All you have to do is click the Poke Ball icon to set a Pokemon as caught or uncaught.</p>
                 <p>Use the search box below to search by a Pokemon's name or dex number.</p>
-                <PokemonListContainer pokemonList={pokemonList} setPokemonList={setPokemonList} />
-                <FloatingMenu setPokemonList={setPokemonList} />
+                <PokemonListContainer />
+                <FloatingMenu />
             </div>
         </div>
     );

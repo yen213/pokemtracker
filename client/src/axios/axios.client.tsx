@@ -10,10 +10,17 @@ const axiosClient = axios.create({
     },
 });
 
-// Interceptor for API calls
+// Intercepts all API calls made with Axios
 axiosClient.interceptors.response.use(
     (response) => {
-        return response;
+        if (response.data) {
+            if (response.status >= 200 && response.status < 300) {
+                return response;
+            }
+        }
+
+        // Reject non-200 responses
+        return Promise.reject(response);
     },
     (error) => {
         let res = error.response;

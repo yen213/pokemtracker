@@ -1,18 +1,17 @@
+import pokemonType from "../styles/pokemon-types.module.css";
 import PokeBallIcon from "../icons/PokeBallIcon";
 
-import { PokemonObject } from "../pokemon.type";
-
-import pokemonType from "../styles/pokemon-types.module.css";
+import { AppContextValue, useData } from "../App.context";
 
 type Props = {
-    filteredPokemonList: Array<PokemonObject>;
-    caughtPokemon: Array<number>;
     onPokemonClick: Function;
-    setCaughtPokemon: React.Dispatch<React.SetStateAction<Array<number>>>;
 };
 
 // Renders the list of all the Pokemon
-const PokemonList = ({ filteredPokemonList, caughtPokemon, onPokemonClick, setCaughtPokemon }: Props) => {
+const PokemonList = ({ onPokemonClick }: Props) => {
+    // App context
+    const { isUserLoggedIn, caughtPokemon, filteredPokemonList, setCaughtPokemon }: AppContextValue = useData();
+
     /**
      * Removes the Pokemon from the {@link caughtPokemon} list if user clicks the
      * Pokeball on an already caught Pokemon. Else adds it to the list.
@@ -34,7 +33,7 @@ const PokemonList = ({ filteredPokemonList, caughtPokemon, onPokemonClick, setCa
      *  Sort each Pokemon object on dex_number (increasing order) and map
      *  the {@link data} to a <li/> element
      */
-    const pokemonList = filteredPokemonList
+    const pokemonListItems = filteredPokemonList
         .sort((a, b) => a.dex_number - b.dex_number)
         .map((pokemon) => {
             let isCaught = caughtPokemon.includes(pokemon.dex_number);
@@ -53,7 +52,7 @@ const PokemonList = ({ filteredPokemonList, caughtPokemon, onPokemonClick, setCa
                         <PokeBallIcon isCaught={isCaught} />
                     </div>
                     <div
-                        className="w-10/12 flex place-items-center flex-col cursor-pointer"
+                        className={`w-10/12 flex place-items-center flex-col${isUserLoggedIn ? " cursor-pointer" : ""}`}
                         onClick={() => onPokemonClick(pokemon)}
                     >
                         <p className="font-bold">{pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}</p>
@@ -70,7 +69,7 @@ const PokemonList = ({ filteredPokemonList, caughtPokemon, onPokemonClick, setCa
             );
         });
 
-    return <ul className="grid grid-cols-1 justify-items-center md:grid-cols-3 md:gap-4">{pokemonList}</ul>;
+    return <ul className="grid grid-cols-1 justify-items-center md:grid-cols-3 md:gap-4">{pokemonListItems}</ul>;
 };
 
 export default PokemonList;

@@ -1,6 +1,8 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { addNewPokemon, deletePokemon, updatePokemon } from "../axios/pokemon.api";
 
+import { AppContextValue, useData } from "../App.context";
+
 import LabelInput from "../input/LabelInput";
 import PokemonTypeSelector from "../input/PokemonTypeSelector";
 
@@ -11,14 +13,17 @@ type Props = {
     type: "ADD" | "UPDATE";
     data?: PokemonObject | null;
     setShowModal: Dispatch<SetStateAction<boolean>>;
-    setPokemonList: Dispatch<SetStateAction<Array<PokemonObject>>>;
 };
 
 /**
  * Component to render a modal for admins to add, update, or delete a
  * Pokemon from the database
  */
-const PokemonModal = ({ showModal, type, data, setShowModal, setPokemonList }: Props) => {
+const PokemonModal = ({ showModal, type, data, setShowModal }: Props) => {
+    // App context
+    const { setPokemonList }: AppContextValue = useData();
+
+    // Component states
     const [pokemonName, setPokemonName] = useState(data?.name || "");
     const [dexNumber, setDexNumber] = useState(data?.dex_number || null);
     const [type1, setType1] = useState(data?.type_1 || "any");
@@ -27,8 +32,8 @@ const PokemonModal = ({ showModal, type, data, setShowModal, setPokemonList }: P
 
     /**
      * Since the Update/Add button are conditionally rendered, we
-     * use this to make sure we are calling the right API with the
-     * right button
+     * use this to make sure we are calling the right API with its
+     * corresponding button
      */
     const callTypeFunction = () => {
         if (type === "ADD") {

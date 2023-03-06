@@ -1,26 +1,23 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import LabelInput from "../input/LabelInput";
 import PokemonList from "./PokemonList";
 import PokemonModal from "../menu/PokemonModal";
 import PokemonTypeSelector from "../input/PokemonTypeSelector";
 
-import { pokemonData } from "../data/pokemon";
+import { AppContextValue, useData } from "../App.context";
 import { PokemonObject } from "../pokemon.type";
-
-type Props = {
-    pokemonList: Array<PokemonObject>;
-    setPokemonList: Dispatch<SetStateAction<Array<PokemonObject>>>;
-};
 
 // Wraps and renders the Pokemon search components, the Pokemon list
 // and the Pokemon add, update, and delete modal
-export const PokemonListContainer = ({ pokemonList, setPokemonList }: Props) => {
-    const [filteredList, setFilteredList] = useState(pokemonData); // Filtered list
+export const PokemonListContainer = () => {
+    // App context
+    const { isUserLoggedIn, pokemonList, caughtPokemon, setFilteredPokemonList }: AppContextValue = useData();
+
+    // Component states
     const [modalData, setModalData] = useState<PokemonObject | null>(null);
     const [showModal, setShowModal] = useState(false);
     const [inputFilter, setInputFilter] = useState("");
-    const [caughtPokemon, setCaughtPokemon] = useState<Array<number>>([]);
     const [type1, setType1] = useState("any");
     const [type2, setType2] = useState("any");
 
@@ -70,18 +67,20 @@ export const PokemonListContainer = ({ pokemonList, setPokemonList }: Props) => 
      * @param pokemon Pokemon object to update/delete from the DB
      */
     const onPokemonClick = (pokemon: PokemonObject) => {
-        setModalData(pokemon);
-        setShowModal(true);
+        if (isUserLoggedIn) {
+            setModalData(pokemon);
+            setShowModal(true);
+        }
     };
 
     // Update the filtered list data state on user input
     useEffect(() => {
-        setFilteredList(filterPokemonData(type1, type2, inputFilter));
+        setFilteredPokemonList(filterPokemonData(type1, type2, inputFilter));
     }, [type1, type2, inputFilter]);
 
     // Update the filtered list state when the real list state changes
     useEffect(() => {
-        setFilteredList(pokemonList);
+        setFilteredPokemonList(pokemonList);
     }, [pokemonList]);
 
     return (
@@ -112,23 +111,12 @@ export const PokemonListContainer = ({ pokemonList, setPokemonList }: Props) => 
                 </div>
             </div>
             <p className="mb-3">
-                You have caught <strong>{caughtPokemon.length}</strong> out of <strong>{pokemonList.length}</strong>, or{" "}
+                You have caught <strong>{caughtPokemon.length}</strong> out of <strong>{pokemonList.length}</strong>, or
                 <strong>~{((caughtPokemon.length / pokemonList.length) * 100).toFixed(0)}%</strong>
             </p>
-            <PokemonList
-                onPokemonClick={onPokemonClick}
-                caughtPokemon={caughtPokemon}
-                setCaughtPokemon={setCaughtPokemon}
-                filteredPokemonList={filteredList}
-            />
+            <PokemonList onPokemonClick={onPokemonClick} />
             {showModal && (
-                <PokemonModal
-                    type="UPDATE"
-                    data={modalData}
-                    showModal={showModal}
-                    setShowModal={setShowModal}
-                    setPokemonList={setPokemonList}
-                />
+                <PokemonModal type="UPDATE" data={modalData} showModal={showModal} setShowModal={setShowModal} />
             )}
         </div>
     );

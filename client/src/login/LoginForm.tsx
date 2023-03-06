@@ -7,15 +7,21 @@ import LockIcon from "../icons/LockIcon";
 import LoginIcon from "../icons/LoginIcon";
 
 import { loginUser } from "../axios/user.api";
+import { AppContextValue, useData } from "../App.context";
 
 // Renders the form for the login page
 const LoginForm = () => {
+    // App context
+    const { setIsUserLoggedIn }: AppContextValue = useData();
+
+    // Component states
     const [viewPassword, setViewPassword] = useState(false);
     const [email, setEmail] = useState("");
     const [isEmailValid, setIsEmailValid] = useState(true);
     const [isPasswordValid, setIsPasswordValid] = useState(true);
     const [password, setPassword] = useState("");
 
+    // Router-dom navigator hook
     const navigate = useNavigate();
 
     // Logs in a user to the app and routes them to the home page
@@ -38,6 +44,7 @@ const LoginForm = () => {
         const res = await loginUser({ username: email.trim(), password: password.trim() });
 
         if (res.status === 200) {
+            setIsUserLoggedIn(true);
             navigate("/");
         }
     };
