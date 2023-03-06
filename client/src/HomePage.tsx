@@ -41,8 +41,8 @@ const HomePage = () => {
     return (
         <div className="antialiased font-open-sans bg-gradient-to-b from-sky-100 to-sky-300 to-sky-400 min-h-screen">
             <AppHeader />
-            <div className="mx-auto py-5 w-3/6 flex flex-col gap-3">
-                <h2 className="font-bold text-2xl">Welcome to the PokeTracker!</h2>
+            <div className="mx-auto py-5 flex flex-col gap-3 w-5/6 md:w-5/6 lg:w-4/6 xl:w-3/6 text-sm md:text-base">
+                <h2 className="font-bold text-xl md:text-2xl">Welcome to the PokeTracker!</h2>
                 <p>
                     Here is where you will be able to see which Pokemon you have left to catch on your way to completing
                     the dex!

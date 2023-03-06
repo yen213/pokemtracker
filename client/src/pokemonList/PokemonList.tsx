@@ -54,13 +54,15 @@ const PokemonList = ({ onPokemonClick }: Props) => {
                     >
                         <PokeBallIcon isCaught={isCaught} />
                     </div>
-                    <div
-                        className={`w-10/12 flex place-items-center flex-col${isUserLoggedIn ? " cursor-pointer" : ""}`}
-                        onClick={() => onPokemonClick(pokemon)}
-                    >
+                    <div className="w-10/12 flex place-items-center flex-col">
                         <p className="font-bold">{pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}</p>
                         <p className="font-bold">#{pokemon.dex_number}</p>
-                        <img className="my-1 hover:animate-jump" src={pokemon.image_url} />
+                        <img
+                            onClick={() => onPokemonClick(pokemon)}
+                            className={`my-1 hover:animate-jump${isUserLoggedIn ? " cursor-pointer" : ""}`}
+                            src={pokemon.image_url}
+                            alt=""
+                        />
                         <div className="my-1">
                             <div className={`${pokemonType["type-icon"]} ${pokemonType[pokemon.type_1]} mr-1`}></div>
                             {pokemon.type_2 != null && (
@@ -94,7 +96,7 @@ const PokemonList = ({ onPokemonClick }: Props) => {
                 });
             },
             {
-                threshold: 0.2,
+                threshold: 0.1,
             }
         );
 
@@ -107,7 +109,7 @@ const PokemonList = ({ onPokemonClick }: Props) => {
         return () => observer.disconnect();
     }, [filteredPokemonList]);
 
-    return <ul className="grid grid-cols-1 justify-items-center md:grid-cols-3 md:gap-4">{pokemonListItems}</ul>;
+    return <ul className="grid grid-cols-1 gap-4 justify-items-center md:grid-cols-3">{pokemonListItems}</ul>;
 };
 
 export default PokemonList;

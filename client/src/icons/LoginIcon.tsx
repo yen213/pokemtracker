@@ -3,7 +3,9 @@ type Props = { isMenuIcon?: boolean };
 const LoginIcon = ({ isMenuIcon }: Props) => {
     return (
         <svg
-            className={`h-8 w-8 text-neutral-600${isMenuIcon ? " cursor-pointer hover:text-neutral-800" : ""}`}
+            className={`h-8 w-8 ${
+                isMenuIcon ? "text-neutral-500 cursor-pointer hover:text-neutral-800" : "text-neutral-600"
+            }`}
             width="24"
             height="24"
             viewBox="0 0 24 24"

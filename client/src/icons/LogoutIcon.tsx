@@ -6,7 +6,7 @@ const LogoutIcon = ({ onClick }: Props) => {
     return (
         <svg
             onClick={onClick}
-            className="h-8 w-8 text-neutral-600 cursor-pointer hover:text-neutral-800"
+            className="h-8 w-8 text-neutral-500 cursor-pointer hover:text-neutral-800"
             width="24"
             height="24"
             viewBox="0 0 24 24"
