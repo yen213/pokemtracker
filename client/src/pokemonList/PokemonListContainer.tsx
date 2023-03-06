@@ -76,7 +76,7 @@ export const PokemonListContainer = () => {
 
     // Update the filtered list
     useEffect(() => {
-        const userFiltered = filterPokemonData(type1, type2, inputFilter);
+        const userFiltered = filterPokemonData(type1, type2, inputFilter.trim().toLocaleLowerCase());
 
         setFilteredPokemonList(userFiltered);
 
