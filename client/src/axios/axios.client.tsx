@@ -22,19 +22,7 @@ axiosClient.interceptors.response.use(
         // Reject non-200 responses
         return Promise.reject(response);
     },
-    (error) => {
-        let res = error.response;
-
-        if (res.status == 401) {
-            console.log(res);
-        } else if (res.status === 400) {
-            console.log(res);
-        } else if (res.status === 500) {
-            console.log(res);
-        }
-
-        return Promise.reject(error);
-    }
+    (error) => Promise.reject(error)
 );
 
 export default axiosClient;
