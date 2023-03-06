@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 type Props = {
     isCaught: boolean;
@@ -6,14 +6,21 @@ type Props = {
 
 export default function PokeBallIcon({ isCaught }: Props) {
     const [isHovered, setIsHovered] = useState(false); // Draws the red color on top part of caught Pokeballs
-    const [isClicked, setIsClicked] = useState(false); // Animates caught action
 
     return (
         <svg
-            onClick={() => setIsClicked((prev) => !prev)}
+            onClick={(e) => {
+                if (isCaught) {
+                    e.currentTarget.classList.add("hover:animate-catching-rotate");
+                    e.currentTarget.classList.remove("animate-jump");
+                } else {
+                    e.currentTarget.classList.add("animate-jump");
+                    e.currentTarget.classList.remove("hover:animate-catching-rotate");
+                }
+            }}
             onMouseEnter={(e) => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            className={`${(!isCaught && "hover:animate-catching-rotate") || (isClicked && "animate-jump")}`}
+            className={`hover:animate-catching-rotate`}
             version="1.1"
             width="25"
             height="25"
