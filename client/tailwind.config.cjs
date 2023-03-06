@@ -17,10 +17,15 @@ module.exports = {
                     "50%": { transform: "translateY(0)" },
                     "100%": { transform: "translateY(0)" },
                 },
+                fadeIn: {
+                    "0%": { opacity: 0 },
+                    "100%": { opacity: 1 },
+                },
             },
             animation: {
                 "catching-rotate": "catching-rotate 0.7s ease infinite",
-                jump: "jump 1s ease",
+                jump: "jump 1s ease forwards",
+                fadeIn: "fadeIn 0.7s ease forwards",
             },
         },
     },

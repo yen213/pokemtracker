@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import pokemonType from "../styles/pokemon-types.module.css";
 import PokeBallIcon from "../icons/PokeBallIcon";
 
@@ -40,6 +42,7 @@ const PokemonList = ({ onPokemonClick }: Props) => {
 
             return (
                 <li
+                    id={`pokemon_list_item_${pokemon.dex_number}`}
                     key={pokemon.dex_number}
                     className={`flex place-items-center bg-gray-100 rounded-lg w-full p-2${
                         isCaught ? " bg-green-400" : ""
@@ -68,6 +71,41 @@ const PokemonList = ({ onPokemonClick }: Props) => {
                 </li>
             );
         });
+
+    // Animate the list items to fading into and out of view
+    useEffect(() => {
+        // Get all the <li/> elements
+        const targets = document.querySelectorAll('[id^="pokemon_list_item_"]');
+
+        // Add the animation class whenever one of the items are in view
+        // Else remove the class
+        const observer: IntersectionObserver = new IntersectionObserver(
+            (entries, _observer) => {
+                entries.forEach((entry) => {
+                    const entryID = entry.target.id.startsWith("pokemon_list_item_");
+
+                    if (entryID) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add("animate-fadeIn");
+                        } else {
+                            entry.target.classList.remove("animate-fadeIn");
+                        }
+                    }
+                });
+            },
+            {
+                threshold: 0.2,
+            }
+        );
+
+        // Attach the observer to each targeted element
+        targets.forEach(function (target) {
+            target.classList.add("opacity-0"); // Initially Hide the element
+            observer.observe(target);
+        });
+
+        return () => observer.disconnect();
+    }, [filteredPokemonList]);
 
     return <ul className="grid grid-cols-1 justify-items-center md:grid-cols-3 md:gap-4">{pokemonListItems}</ul>;
 };

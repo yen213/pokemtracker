@@ -46,7 +46,7 @@ export const AppContext = ({ children }: { children: React.ReactNode }) => {
     const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
     const [pokemonList, setPokemonList] = useState(pokemonData);
     const [filteredPokemonList, setFilteredPokemonList] = useState<PokemonObject[]>(pokemonData);
-    const [caughtPokemon, setCaughtPokemon] = useState<number[]>([]);
+    const [caughtPokemon, setCaughtPokemon] = useState<number[]>([]); // Storing the dex_number as the caught Pokemon
 
     return (
         <CtxProvider

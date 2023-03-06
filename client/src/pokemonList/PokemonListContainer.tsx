@@ -20,6 +20,7 @@ export const PokemonListContainer = () => {
     const [inputFilter, setInputFilter] = useState("");
     const [type1, setType1] = useState("any");
     const [type2, setType2] = useState("any");
+    const [showCaught, setShowCaught] = useState(false);
 
     /**
      * Filters {@link pokemonList} based on user input and/or their selection of the
@@ -73,15 +74,17 @@ export const PokemonListContainer = () => {
         }
     };
 
-    // Update the filtered list data state on user input
+    // Update the filtered list
     useEffect(() => {
         setFilteredPokemonList(filterPokemonData(type1, type2, inputFilter));
-    }, [type1, type2, inputFilter]);
+        // Filter to show caught pokemon
+        if (caughtPokemon.length > 0 && showCaught) {
+            const caughtSet = new Set(caughtPokemon);
+            const caughtFilter = pokemonList.filter((p) => caughtSet.has(p.dex_number));
 
-    // Update the filtered list state when the real list state changes
-    useEffect(() => {
-        setFilteredPokemonList(pokemonList);
-    }, [pokemonList]);
+            setFilteredPokemonList(caughtFilter);
+        }
+    }, [type1, type2, inputFilter, pokemonList, showCaught]);
 
     return (
         <div>
@@ -110,10 +113,27 @@ export const PokemonListContainer = () => {
                     />
                 </div>
             </div>
-            <p className="mb-3">
-                You have caught <strong>{caughtPokemon.length}</strong> out of <strong>{pokemonList.length}</strong>, or
-                <strong>~{((caughtPokemon.length / pokemonList.length) * 100).toFixed(0)}%</strong>
-            </p>
+            <div className="flex justify-between w-full mt-5">
+                <p className="mb-3">
+                    You have caught <strong>{caughtPokemon.length}</strong> out of <strong>{pokemonList.length}</strong>
+                    , or
+                    <strong>~{((caughtPokemon.length / pokemonList.length) * 100).toFixed(0)}%</strong>
+                </p>
+                <div className="flex items-center mb-4">
+                    <label
+                        htmlFor="pokemon-list-show-caught"
+                        className="block text-gray-700 text-sm font-semibold mr-2"
+                    >
+                        Show Caught
+                    </label>
+                    <input
+                        id="pokemon-list-show-caught"
+                        onChange={() => setShowCaught(!showCaught)}
+                        type="checkbox"
+                        className="w-4 h-4 rounded"
+                    />
+                </div>
+            </div>
             <PokemonList onPokemonClick={onPokemonClick} />
             {showModal && (
                 <PokemonModal type="UPDATE" data={modalData} showModal={showModal} setShowModal={setShowModal} />
