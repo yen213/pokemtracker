@@ -50,7 +50,14 @@ const LoginForm = () => {
                 navigate("/");
             },
             (err) => {
-                setErrorMessage(err.response.data.message);
+                const msg = err.response.data.message;
+
+                if (msg) {
+                    setErrorMessage(err.response.data.message);
+                } else {
+                    setErrorMessage(err.message);
+                }
+
                 setShowError(true);
             }
         );
