@@ -76,13 +76,23 @@ export const PokemonListContainer = () => {
 
     // Update the filtered list
     useEffect(() => {
-        setFilteredPokemonList(filterPokemonData(type1, type2, inputFilter));
-        // Filter to show caught pokemon
-        if (caughtPokemon.length > 0 && showCaught) {
-            const caughtSet = new Set(caughtPokemon);
-            const caughtFilter = pokemonList.filter((p) => caughtSet.has(p.dex_number));
+        const userFiltered = filterPokemonData(type1, type2, inputFilter);
 
-            setFilteredPokemonList(caughtFilter);
+        setFilteredPokemonList(userFiltered);
+
+        // Filter to show caught pokemon, takes into consideration current input fields
+        if (showCaught) {
+            if (caughtPokemon.length > 0) {
+                const caughtSet = new Set(caughtPokemon);
+                const userFilteredSet = new Set(userFiltered.map((p) => p.dex_number));
+                const caughtFilter = pokemonList.filter(
+                    (p) => caughtSet.has(p.dex_number) && userFilteredSet.has(p.dex_number)
+                );
+
+                setFilteredPokemonList(caughtFilter);
+            } else {
+                setFilteredPokemonList([]);
+            }
         }
     }, [type1, type2, inputFilter, pokemonList, showCaught]);
 
