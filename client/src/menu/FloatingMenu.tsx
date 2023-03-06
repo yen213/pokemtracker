@@ -5,6 +5,7 @@ import LoginIcon from "../icons/LoginIcon";
 import LogoutIcon from "../icons/LogoutIcon";
 import PlusIcon from "../icons/PlusIcon";
 import PokemonModal from "./PokemonModal";
+import Toast from "../toast/Toast";
 
 import { logoutUser } from "../axios/user.api";
 import { AppContextValue, useData } from "../App.context";
@@ -16,14 +17,25 @@ const FloatingMenu = () => {
 
     // Component state
     const [showAddModal, setShowAddModal] = useState(false);
+    const [showAPiMessage, setShowAPiMessage] = useState(false);
+    const [apiMessage, setApiMessage] = useState("");
+    const [apiMessageType, setApiMessageType] = useState<"SUCCESS" | "ERROR">("SUCCESS");
 
+    // Logs out the user and deletes their session
     const logout = async () => {
-        const res = await logoutUser();
-
-        if (res.status === 200) {
-            setIsUserLoggedIn(false);
-            window.location.reload();
-        }
+        await logoutUser().then(
+            (res) => {
+                setIsUserLoggedIn(false);
+                setApiMessage(res.data.message);
+                setShowAPiMessage(true);
+                setApiMessageType("SUCCESS");
+            },
+            (err) => {
+                setApiMessage(err.response.data.message);
+                setShowAPiMessage(true);
+                setApiMessageType("ERROR");
+            }
+        );
     };
 
     return (
@@ -46,6 +58,9 @@ const FloatingMenu = () => {
                 <PlusIcon iconClass="h-8 w-8 text-neutral-600 hover:text-neutral-800" />
             </div>
             {showAddModal && <PokemonModal type="ADD" showModal={showAddModal} setShowModal={setShowAddModal} />}
+            {showAPiMessage && (
+                <Toast type={apiMessageType} message={apiMessage} closeToast={() => setShowAPiMessage(false)} />
+            )}
         </div>
     );
 };

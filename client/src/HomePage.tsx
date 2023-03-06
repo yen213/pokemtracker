@@ -17,21 +17,24 @@ const HomePage = () => {
     // to see if a user is logged in
     useEffect(() => {
         const getList = async () => {
-            const res = await getPokemonList();
-            const list = res.data.list;
+            await getPokemonList().then(
+                (res) => {
+                    const list = res.data.list;
 
-            if (res.status === 200 && list != null && list.length > 0) {
-                setPokemonList(list);
-                setFilteredPokemonList(list);
-            }
+                    if (list.length > 0) {
+                        setPokemonList(list);
+                        setFilteredPokemonList(list);
+                    }
+                },
+                (err) => console.log(err)
+            );
         };
 
         const getUser = async () => {
-            const res = await getLoggedInUser();
-
-            if (res.status === 200) {
-                setIsUserLoggedIn(true);
-            }
+            await getLoggedInUser().then(
+                () => setIsUserLoggedIn(true),
+                (err) => console.log(err)
+            );
         };
 
         getList();

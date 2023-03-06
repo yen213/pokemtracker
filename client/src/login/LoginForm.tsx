@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import EyeIcon from "../icons/EyeIcon";
 import LockIcon from "../icons/LockIcon";
 import LoginIcon from "../icons/LoginIcon";
+import Toast from "../toast/Toast";
 
 import { loginUser } from "../axios/user.api";
 import { AppContextValue, useData } from "../App.context";
@@ -20,6 +21,8 @@ const LoginForm = () => {
     const [isEmailValid, setIsEmailValid] = useState(true);
     const [isPasswordValid, setIsPasswordValid] = useState(true);
     const [password, setPassword] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+    const [showError, setShowError] = useState(false);
 
     // Router-dom navigator hook
     const navigate = useNavigate();
@@ -41,12 +44,16 @@ const LoginForm = () => {
             return;
         }
 
-        const res = await loginUser({ username: email.trim(), password: password.trim() });
-
-        if (res.status === 200) {
-            setIsUserLoggedIn(true);
-            navigate("/");
-        }
+        await loginUser({ username: email.trim(), password: password.trim() }).then(
+            () => {
+                setIsUserLoggedIn(true);
+                navigate("/");
+            },
+            (err) => {
+                setErrorMessage(err.response.data.message);
+                setShowError(true);
+            }
+        );
     };
 
     return (
@@ -101,6 +108,7 @@ const LoginForm = () => {
                     </Link>
                 </form>
             </div>
+            {showError && <Toast type="ERROR" message={errorMessage} closeToast={() => setShowError(false)} />}
         </div>
     );
 };

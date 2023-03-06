@@ -15,7 +15,7 @@ const Toast = ({ message, type, closeToast }: Props) => {
         let timer: number | null | undefined = null;
 
         if (type === "SUCCESS") {
-            timer = setTimeout(closeToast, 3 * 1000);
+            timer = setTimeout(closeToast, 2 * 1000);
         }
 
         return () => {
@@ -32,7 +32,7 @@ const Toast = ({ message, type, closeToast }: Props) => {
             } flex justify-between items-center ease-in-out duration-300 z-50 fixed m-auto bottom-20 left-0 right-0 max-w-lg p-4 bg-gray-700 rounded-lg shadow`}
             role="alert"
         >
-            <p className="mr-6 text-md font-semibold tracking-wider leading-6 break-word cursor-default">{message}</p>
+            <p className="mr-6 text-md font-semibold tracking-wider leading-6 break-all cursor-default">{message}</p>
             <button
                 onClick={closeToast}
                 type="button"

@@ -5,7 +5,9 @@ import { AppContextValue, useData } from "../App.context";
 
 import LabelInput from "../input/LabelInput";
 import PokemonTypeSelector from "../input/PokemonTypeSelector";
+import Toast from "../toast/Toast";
 
+import { AxiosResponse } from "axios";
 import { PokemonObject } from "../pokemon.type";
 
 type Props = {
@@ -25,10 +27,13 @@ const PokemonModal = ({ showModal, type, data, setShowModal }: Props) => {
 
     // Component states
     const [pokemonName, setPokemonName] = useState(data?.name || "");
-    const [dexNumber, setDexNumber] = useState(data?.dex_number || null);
+    const [dexNumber, setDexNumber] = useState(data?.dex_number || 0);
     const [type1, setType1] = useState(data?.type_1 || "any");
     const [type2, setType2] = useState(data?.type_2 || "any");
     const [imageUrl, setImageUrl] = useState(data?.image_url || "");
+    const [showAPiMessage, setShowAPiMessage] = useState(false);
+    const [apiMessage, setApiMessage] = useState("");
+    const [apiMessageType, setApiMessageType] = useState<"SUCCESS" | "ERROR">("SUCCESS");
 
     /**
      * Since the Update/Add button are conditionally rendered, we
@@ -43,71 +48,90 @@ const PokemonModal = ({ showModal, type, data, setShowModal }: Props) => {
         }
     };
 
+    // Builds the POST request object
+    const buildReqObject = () => ({
+        name: pokemonName,
+        dex_number: dexNumber,
+        type_1: type1,
+        type_2: type2 === "any" ? null : type2,
+        image_url: imageUrl,
+    });
+
     // Calls API to add Pokemon to the DB and update the list state
     const addPokemonToDB = async () => {
-        if (dexNumber === null) {
-            return;
+        if (showAPiMessage) {
+            setShowAPiMessage(false);
         }
 
-        const pokemon: PokemonObject = {
-            name: pokemonName,
-            dex_number: dexNumber,
-            type_1: type1,
-            type_2: type2 === "any" ? null : type2,
-            image_url: imageUrl,
-        };
-
-        const res = await addNewPokemon(pokemon);
-        const newPokemon: PokemonObject = res.data.pokemon;
-
-        if (res.status == 200 && newPokemon != null) {
-            setPokemonList((prev) => [...prev, newPokemon]);
-            setShowModal(false);
-        }
+        await addNewPokemon(buildReqObject()).then(
+            (res) => {
+                setPokemonList((prev) => [...prev, res.data.pokemon]);
+                handleSuccessAPI(res);
+            },
+            (err) => handleFailAPI(err)
+        );
     };
 
     // Calls API to update Pokemon from the DB and update the list state
     const updatePokemonFromDB = async () => {
-        if (dexNumber === null) {
-            return;
+        if (showAPiMessage) {
+            setShowAPiMessage(false);
         }
 
-        const pokemon: PokemonObject = {
-            name: pokemonName,
-            dex_number: dexNumber,
-            type_1: type1,
-            type_2: type2 === "any" ? null : type2,
-            image_url: imageUrl,
-        };
+        await updatePokemon(buildReqObject()).then(
+            (res) => {
+                const updatedPokemon: PokemonObject = res.data.pokemon;
 
-        const res = await updatePokemon(pokemon);
-        const updatedPokemon: PokemonObject = res.data.pokemon;
+                setPokemonList((prev) =>
+                    prev.map((p) => {
+                        if (p.id === updatedPokemon.id) {
+                            return updatedPokemon;
+                        }
 
-        if (res.status == 200 && updatedPokemon != null) {
-            setPokemonList((prev) =>
-                prev.map((p) => {
-                    if (p.id === updatedPokemon.id) {
-                        return updatedPokemon;
-                    }
+                        return p;
+                    })
+                );
 
-                    return p;
-                })
-            );
-            setShowModal(false);
-        }
+                handleSuccessAPI(res);
+            },
+            (err) => handleFailAPI(err)
+        );
     };
 
     // Calls API to delete Pokemon from the DB and update the list state
     const deletePokemonFromDB = async () => {
-        if (dexNumber !== null) {
-            const res = await deletePokemon(dexNumber);
-            const deletedPokemon: PokemonObject = res.data.pokemon;
-
-            if (res.status == 200 && deletedPokemon != null) {
-                setPokemonList((prev) => prev.filter((p) => p.dex_number !== deletedPokemon.dex_number));
-                setShowModal(false);
-            }
+        if (showAPiMessage) {
+            setShowAPiMessage(false);
         }
+
+        await deletePokemon(dexNumber).then(
+            (res) => {
+                const deletedPokemon: PokemonObject = res.data.pokemon;
+
+                setPokemonList((prev) => prev.filter((p) => p.dex_number !== deletedPokemon.dex_number));
+                handleSuccessAPI(res);
+            },
+            (err) => handleFailAPI(err)
+        );
+    };
+
+    // Helper function to handle unsuccessful API call
+    const handleFailAPI = (err: any) => {
+        if (err.response.status === 401) {
+            setApiMessage(err.response.data.message);
+        } else {
+            setApiMessage(JSON.stringify(err.response.data.error));
+        }
+
+        setShowAPiMessage(true);
+        setApiMessageType("ERROR");
+    };
+
+    // Helper function to handle successful API call
+    const handleSuccessAPI = (res: AxiosResponse) => {
+        setApiMessage(res.data.message);
+        setShowAPiMessage(true);
+        setApiMessageType("SUCCESS");
     };
 
     return (
@@ -185,6 +209,16 @@ const PokemonModal = ({ showModal, type, data, setShowModal }: Props) => {
                     </div>
                 </div>
             </div>
+            {showAPiMessage && (
+                <Toast
+                    type={apiMessageType}
+                    message={apiMessage}
+                    closeToast={() => {
+                        setShowAPiMessage(false);
+                        setShowModal(false);
+                    }}
+                />
+            )}
         </div>
     );
 };
