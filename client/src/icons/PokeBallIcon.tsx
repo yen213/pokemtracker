@@ -10,17 +10,20 @@ export default function PokeBallIcon({ isCaught }: Props) {
     return (
         <svg
             onClick={(e) => {
-                if (isCaught) {
-                    e.currentTarget.classList.add("hover:animate-catching-rotate");
-                    e.currentTarget.classList.remove("animate-jump");
-                } else {
-                    e.currentTarget.classList.add("animate-jump");
-                    e.currentTarget.classList.remove("hover:animate-catching-rotate");
-                }
+                e.currentTarget.classList.remove("hover:animate-catching-rotate");
+                e.currentTarget.classList.add("animate-jump");
             }}
-            onMouseEnter={(e) => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            className={`hover:animate-catching-rotate`}
+            onMouseEnter={(e) => {
+                e.currentTarget.classList.remove("animate-jump");
+                e.currentTarget.classList.add("hover:animate-catching-rotate");
+                setIsHovered(true);
+            }}
+            onMouseLeave={(e) => {
+                e.currentTarget.classList.remove("animate-jump");
+                e.currentTarget.classList.add("hover:animate-catching-rotate");
+                setIsHovered(false);
+            }}
+            className="w-6 h-6"
             version="1.1"
             width="25"
             height="25"
