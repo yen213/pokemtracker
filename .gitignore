@@ -5,4 +5,3 @@ __pycache__/
 .idea/
 .vscode/
 .DS_Store
-src/Instructions.md
