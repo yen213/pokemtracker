@@ -6,24 +6,17 @@ type Props = {
 
 export default function PokeBallIcon({ isCaught }: Props) {
     const [isHovered, setIsHovered] = useState(false); // Draws the red color on top part of caught Pokeballs
+    const [isClicked, setIsClicked] = useState(false); // Animates caught action
 
     return (
         <svg
-            onClick={(e) => {
-                e.currentTarget.classList.remove("hover:animate-catching-rotate");
-                e.currentTarget.classList.add("animate-jump");
-            }}
-            onMouseEnter={(e) => {
-                e.currentTarget.classList.remove("animate-jump");
-                e.currentTarget.classList.add("hover:animate-catching-rotate");
-                setIsHovered(true);
-            }}
+            onClick={() => setIsClicked(true)}
+            onMouseEnter={(e) => setIsHovered(true)}
             onMouseLeave={(e) => {
-                e.currentTarget.classList.remove("animate-jump");
-                e.currentTarget.classList.add("hover:animate-catching-rotate");
                 setIsHovered(false);
+                setIsClicked(false);
             }}
-            className="w-6 h-6"
+            className={`${isClicked ? "animate-jump" : "hover:animate-catching-rotate"}`}
             version="1.1"
             width="25"
             height="25"

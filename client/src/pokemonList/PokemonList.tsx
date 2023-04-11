@@ -55,7 +55,7 @@ const PokemonList = ({ onPokemonClick }: Props) => {
                         <PokeBallIcon isCaught={isCaught} />
                     </div>
                     <div className="w-10/12 flex place-items-center flex-col">
-                        <p className="font-bold">{pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}</p>
+                        <p className="font-bold">{pokemon.name}</p>
                         <p className="font-bold">#{pokemon.dex_number}</p>
                         <img
                             onClick={() => onPokemonClick(pokemon)}

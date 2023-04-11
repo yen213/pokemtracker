@@ -12,7 +12,8 @@ import { PokemonObject } from "../pokemon.type";
 // and the Pokemon add, update, and delete modal
 export const PokemonListContainer = () => {
     // App context
-    const { isUserLoggedIn, pokemonList, caughtPokemon, setFilteredPokemonList }: AppContextValue = useData();
+    const { isUserLoggedIn, pokemonList, filteredPokemonList, caughtPokemon, setFilteredPokemonList }: AppContextValue =
+        useData();
 
     // Component states
     const [modalData, setModalData] = useState<PokemonObject | null>(null);
@@ -21,6 +22,9 @@ export const PokemonListContainer = () => {
     const [type1, setType1] = useState("any");
     const [type2, setType2] = useState("any");
     const [showCaught, setShowCaught] = useState(false);
+
+    const caughtSet = new Set(caughtPokemon);
+    const caughtSize = filteredPokemonList.reduce((acc, curr) => acc + (caughtSet.has(curr.dex_number) ? 1 : 0), 0);
 
     /**
      * Filters {@link pokemonList} based on user input and/or their selection of the
@@ -33,7 +37,7 @@ export const PokemonListContainer = () => {
     const filterPokemonData = (t1: string, t2: string, userInput: string) =>
         pokemonList.filter((pokemon) => {
             let dexString = pokemon.dex_number.toString();
-            let matchesInputField = isMatchingNameOrDexNum(userInput, pokemon.name, dexString);
+            let matchesInputField = isMatchingNameOrDexNum(userInput, pokemon.name.toLowerCase(), dexString);
 
             if (t1 === "any" && t2 === "any" && matchesInputField) {
                 return true;
@@ -125,9 +129,9 @@ export const PokemonListContainer = () => {
             </div>
             <div className="flex justify-between w-full mt-5">
                 <p className="mb-3">
-                    You have caught <strong>{caughtPokemon.length}</strong> out of <strong>{pokemonList.length}</strong>
-                    , or
-                    <strong>~{((caughtPokemon.length / pokemonList.length) * 100).toFixed(0)}%</strong>
+                    You have caught <strong>{caughtSize}</strong> out of <strong>{filteredPokemonList.length}</strong>,
+                    or
+                    <strong>~{((caughtSize / filteredPokemonList.length) * 100 || 0).toFixed(0)}%</strong>
                 </p>
                 <div className="flex items-center mb-4">
                     <label

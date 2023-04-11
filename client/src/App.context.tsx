@@ -43,9 +43,16 @@ export { useAppData as useData };
 
 // Creates the Context Provider
 export const AppContext = ({ children }: { children: React.ReactNode }) => {
+    const updatedPokemonData = pokemonData.map((pokemon) => ({
+        ...pokemon,
+        name: pokemon.name
+            .split("-")
+            .map((pn) => pn.charAt(0).toUpperCase() + pn.slice(1))
+            .reduce((acc, curr) => acc + " " + curr),
+    }));
     const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
-    const [pokemonList, setPokemonList] = useState(pokemonData);
-    const [filteredPokemonList, setFilteredPokemonList] = useState<PokemonObject[]>(pokemonData);
+    const [pokemonList, setPokemonList] = useState(updatedPokemonData);
+    const [filteredPokemonList, setFilteredPokemonList] = useState<PokemonObject[]>(updatedPokemonData);
     const [caughtPokemon, setCaughtPokemon] = useState<number[]>([]); // Storing the dex_number as the caught Pokemon
 
     return (
